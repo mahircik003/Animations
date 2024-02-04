@@ -3,6 +3,11 @@
 
 std::string pixels=" .:!/r(l1Z4H9W8$@";
 
+double pulsation_function(int t)
+{
+    return sin(0.001*t);
+}
+
 int main(void)
 {
     int width = 120;
@@ -17,7 +22,7 @@ int main(void)
 
     screen[height * width] = '\0';
 
-    for (int t = 0; t < 10000; t++)
+    for (int t = 0; t < 20000; t++)
     {
         for (int i = 0; i < height; i++)
         {
@@ -26,10 +31,21 @@ int main(void)
                 float x = (float)k / width * 2.0 - 1.0;
                 float y = (float)i / height * 2.0 - 1.0;
 
-                x *= ratio * pixel_ratio;
-                x += sin(t * 0.001);
+                double p=pulsation_function(t);
 
-                double distance_squared = x *x + y *y;
+                x *= ratio * pixel_ratio;
+                x += p;
+
+                double camera_x=0;
+                double camera_y=0;
+                double camera_z=2;
+
+                camera_z += p*p;
+
+                x*=camera_z;
+                y*=camera_z;
+
+                double distance_squared = (x) *(x) + y *y;
 
                 int color = (int)(distance_squared/(radius*radius));
                 if(color<0)
