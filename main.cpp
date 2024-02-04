@@ -1,9 +1,14 @@
 #include <iostream>
 #include <cmath>
+
+std::string pixels=" .:!/r(l1Z4H9W8$@";
+
 int main(void)
 {
     int width = 120;
     int height = 30;
+
+    double radius=0.2;
 
     double ratio = (double)width / height;
     double pixel_ratio = 11.0 / 24;
@@ -23,10 +28,16 @@ int main(void)
 
                 x *= ratio * pixel_ratio;
                 x += sin(t * 0.001);
-                y+=sin(t*0.001);
-                char pixel = ' ';
-                if (x * x + y * y < 0.5)
-                    pixel = '@';
+
+                double distance_squared = x *x + y *y;
+
+                int color = (int)(distance_squared/(radius*radius));
+                if(color<0)
+                    color=0;
+                else if(color>=pixels.size())
+                    color=pixels.size()-1;
+
+                char pixel=pixels[pixels.size()-1-color];
                 screen[i * width + k] = pixel;
             }
         }
